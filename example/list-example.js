@@ -2,12 +2,14 @@
 var GoogleMusic = require('../GoogleMusic').GoogleMusic;
 http.createServer(onRequest).listen(8888);
 function onRequest(request, response) {
-	var googlemusic = new GoogleMusic('user@gmail.com', 'password', 'sj');
-	googlemusic.Login(function(authId) { 
-		googlemusic.GetCookies(function() {
-			googlemusic.GetAllSongs('', function(result, response) {
-				console.log(JSON.stringify(result));
-			}); 
+	var googlemusic = new GoogleMusic('user@gmail.com', 'password');
+	googlemusic.Login(function () {
+		googlemusic.GetAllSongs('', function(result) {
+			var length = result.length;
+			var i;
+			for (i=0;i<length; i++) {
+				console.log(result[i].title);
+			}
 		});
 	});
 }
