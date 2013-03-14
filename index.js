@@ -1,9 +1,9 @@
-exports.GoogleMusic = GoogleMusic;
+exports.GoogleMusicApi = GoogleMusicApi;
 
-var GoogleClientLogin = require('./GoogleClientLogin').GoogleClientLogin;
+var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 var restler = require('restler');
 
-function GoogleMusic(email, password, service) {
+function GoogleMusic(email, password) {
 	this.googleAuth = new GoogleClientLogin({
 	  email: email,
 	  password: password,
@@ -40,6 +40,12 @@ GoogleMusic.prototype = {
 		self.googleAuth.login();
 	},
 
+	// get basic inforamtion( total tracks, total albums, personolized ads :) )
+	GetStatus: function(callback) {
+		return this._sendRequest('post','https://play.google.com/music/services/getstatus', option, null, callback);
+	},
+
+	// get all songs for Google Play, google play could respond with chunks, to receive with chunks get songs with continuationToken
     GetAllSongs: function(continuationToken, callback) {
 		var option = {};
 		option.continuationToken = continuationToken;
@@ -63,6 +69,14 @@ GoogleMusic.prototype = {
 		option = { id : playlistId };
 		return this._sendRequest('post','https://play.google.com/music/services/deleteplaylist', null, null, callback);
 	},
+
+	GetNewAndRecent: function(callback) {
+		return this._sendRequest('post','https://play.google.com/music/services/newandrecent', null, null, callback);
+	},
+
+	GetMixEntries: function(callback) {
+		return this._sendRequest('post','https://play.google.com/music/services/getmixentries', null, null, callback);
+	}, 
 	
 	_getCookies: function(callback) {
 		var self = this;
@@ -101,10 +115,10 @@ GoogleMusic.prototype = {
 		option = option || {};
 		  
 		var restRequest = null;
-		var requestOption = { query:option, parser:restler.parsers.json };
+		var requestOption = { query : option, parser : restler.parsers.json };
 		requestOption.headers = {};
 		requestOption.headers['Authorization'] = 'GoogleLogin auth=' + self.googleAuth.getAuthId();
-		if(body){
+		if (body) {
 			requestOption.data = body;
 			requestOption.headers['content-type'] = 'application/json';
 		}
@@ -112,16 +126,15 @@ GoogleMusic.prototype = {
 		switch(type.toLowerCase()){			
 			case 'post': restRequest = restler.post(url + '?u=0&xt=' + this.cookies['xt'], requestOption);
 			  break;
-			
 			default : restRequest = restler.get(url, requestOption);
 		}
 		  
 
 		restRequest.on('complete', function(result, response ) {
 			if(result instanceof Error || response.statusCode != 200){
-			  return callback(result, response);
+				callback(result, response);
 			}
-			return callback(result);
-		})
+			return callback(result, response);
+		});
 	}
 }

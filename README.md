@@ -6,7 +6,7 @@ allows control of
 `Google Music <http://music.google.com>` with NodeJS.
 
 **Requires:** 
-- GoogleClientLogin (use file in project, original module does not have needed feature)
+- GoogleClientLogin
 - restler
 
 ```javascript
@@ -28,3 +28,19 @@ allows control of
 		});
 	});
 ```
+
+## Methods: 
++ GetStatus 
+	> get basic inforamtion( total tracks, total albums, personolized ads :) )
++ GetAllSongs 
+	> get all songs for Google Play, google play could respond with chunks, to receive with chunks get songs with continuationToken
++ GetPlaylist
+	> get playlist by id, or use "All" for getting all playlists
++ GetSongURL
+	> get song url, pass song id to this function
++ DeletePlaylist
+	> delete playlist, pass playlist id to this function
++ GetNewAndRecent
+	> get new and recent albums
++ GetMixEntries 
+	> get mixed playlists

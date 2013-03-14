@@ -1,5 +1,5 @@
 ﻿var http = require("http");
-var GoogleMusic = require('../GoogleMusic').GoogleMusic;
+var GoogleMusic = require('googlemusicapi').GoogleMusicApi;
 http.createServer(onRequest).listen(8888);
 function onRequest(request, response) {
 	var googlemusic = new GoogleMusic('user@gmail.com', 'password');
@@ -10,6 +10,6 @@ function onRequest(request, response) {
 			for (i=0;i<length; i++) {
 				console.log(result[i].title);
 			}
-		});
+		}); 
 	});
 }
