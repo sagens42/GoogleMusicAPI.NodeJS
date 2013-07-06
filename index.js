@@ -1,9 +1,7 @@
-exports.GoogleMusicApi = GoogleMusicApi;
-
 var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 var restler = require('restler');
 
-function GoogleMusic(email, password) {
+function GoogleMusicApi(email, password) {
 	this.googleAuth = new GoogleClientLogin({
 	  email: email,
 	  password: password,
@@ -12,7 +10,8 @@ function GoogleMusic(email, password) {
 	});
 }
 
-GoogleMusic.prototype = {
+GoogleMusicApi.prototype = {
+    constructor: GoogleMusicApi,
 	Login: function(onSuccess, onFailure, onCaptchaRequest) {
 		var self = this;
 		self.googleAuth.on(GoogleClientLogin.events.login, function(){
@@ -138,3 +137,5 @@ GoogleMusic.prototype = {
 		});
 	}
 }
+
+exports.GoogleMusicApi = GoogleMusicApi;
