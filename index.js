@@ -1,5 +1,3 @@
-exports.GoogleMusicApi = GoogleMusicApi;
-
 var GoogleClientLogin = require('googleclientlogin').GoogleClientLogin;
 var restler = require('restler');
 
@@ -138,3 +136,5 @@ GoogleMusic.prototype = {
 		});
 	}
 }
+
+exports.GoogleMusicApi = GoogleMusic;
